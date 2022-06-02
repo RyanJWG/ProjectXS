@@ -4,4 +4,4 @@ This is a project that had been completed from CSCI2356 (Mobile Application Deve
 
 This project was completed along side Dalhouse Architecture and hours were tracked through Service Learning.
 
-Project can viewed at this [link] (https://ryanjwg.github.io/ProjectXS/)
+Project can viewed at this [link](https://ryanjwg.github.io/ProjectXS/)
