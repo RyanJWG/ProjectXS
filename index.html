@@ -1,0 +1,323 @@
+<!-- 
+    Authors: Ryan Wright A00429924
+             Matthew DeViller A00434806
+             Dexter Adderley A00421717
+    Purpose of program: Display plan and elevation of a trailer.
+    - Allow for the visualization of increasing density of walls.
+    - Allow for the visualization of increasing window size.
+    - Allow for the visualization of different insulating material.
+-->
+<!DOCTYPE html5>
+
+<html>
+  <head>
+    <!-- Holds all linking -->
+    <title>Project XS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="./css/themes/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="./css/themes/P3themeroller.min.css" />
+    <link rel="stylesheet" href="./css/themes/P3.css" />
+
+    <script src="./scripts/jquery-1.11.1.min.js"></script>
+    <script src="./scripts/jquery.mobile-1.4.5.min.js"></script>
+    <script src="./scripts/P3Client.js"></script>
+    <script src="./scripts/P3Server.js"></script>
+  </head>
+
+  <body onload="setup()">
+    <div data-role="page">
+      <div role="main" class="ui-content">
+        <div id="wrapper">
+          <div class="ui-grid-c ui-responsive">
+            <div class="ui-block-a" id="centerID">
+              <img src="projecttitle.png" id="projectTitle" alt="ProjectXS" />
+            </div>
+            <div class="ui-block-b" id="centerID">
+              <img id="shipCrate" src="shipCrate.jpg" alt="Shipping Crate" />
+            </div>
+            <div class="ui-block-c" id="centerID">
+              <div id="chapCentering">
+                <select
+                  name="chapters"
+                  id="chapters"
+                  onchange="pickChapter()"
+                  data-mini="true"
+                  data-theme="b"
+                >
+                  <option value="0" id="chapOption">VIEW CHAPTERS</option>
+                  <option value="1">Ventilation and Drafts</option>
+                  <option value="2" id="insulation">Insulation</option>
+                  <option value="3">Size and Proportion</option>
+                  <option value="4">Immediate Contexture</option>
+                  <option value="5">Construction Details</option>
+                  <option value="6">Energy Sources</option>
+                  <option value="7">Refrigeration Cycle</option>
+                  <option value="8">Psychometrics</option>
+                  <option value="9">Environmental Impacts</option>
+                  <option value="10">Radiation and Glazing</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div id="insulationChap">
+            <div class="ui-grid-c">
+              <div class="ui-block-a" id="centerID">
+                <canvas id="planView" width="321" height="178"></canvas>
+              </div>
+              <div class="ui-block-b" id="centerID"></div>
+              <div class="ui-block c">
+                <canvas id="elevView" width="321" width="154"></canvas>
+              </div>
+            </div>
+            <div class="ui-grid-d ui-responsive">
+              <div class="ui-block-a" id="centerID">
+                <select
+                  name="placesDegree"
+                  id="placesDegree"
+                  onchange="processInput()"
+                  data-theme="c"
+                  data-mini="true"
+                >
+                  <option value="0">PLACES WITH DEGREE-DAYS</option>
+                  <option value="13030">NV Alert - 13030</option>
+                  <option value="9980">NV Iqaluit - 9980</option>
+                  <option value="9000">NV Resolution Island - 9000</option>
+                  <option value="8170">NW Yellowknife - 8170</option>
+                  <option value="7100">ON Attawapiskat - 7100</option>
+                  <option value="6440">MB FlinFlon - 6440</option>
+                  <option value="6050">QC Noranda - 6050</option>
+                  <option value="5670">MB Winnipeg - 5670</option>
+                  <option value="5500">NB Campbellton - 5500</option>
+                  <option value="5000">AL Calgary - 5000</option>
+                  <option value="4800">NL St.Johns - 4800</option>
+                  <option value="4670">NB Fredericton - 4670</option>
+                  <option value="4520">ON Ottawa - 4520</option>
+                  <option value="4460">PE Charlottetown - 4460</option>
+                  <option value="4300">QC Montreal Centre - 4300</option>
+                  <option value="4000">NS Halifax - 4000</option>
+                  <option value="3500">ON Toronto CH - 3500</option>
+                  <option value="3400">ON Windsor - 3400</option>
+                  <option value="3000">BC Nanaimo - 3000</option>
+                  <option value="2900">BC Vancouver - 2900</option>
+                  <option value="2620">BC White Rock - 2620</option>
+                </select>
+              </div>
+              <div class="ui-block-b" id="centerID">
+                <select
+                  name="constructionR"
+                  id="constructionR"
+                  onchange="processInput()"
+                  data-theme="c"
+                  data-mini="true"
+                >
+                  <option value="0">
+                    OPAQUE CONSTRUCTION WITH R or R/INCH
+                  </option>
+                  <option value="0">Bare Container (R1)</option>
+                  <option value="0">
+                    Plus Interior Finish, Uninsulated (R2)
+                  </option>
+                  <option value="3">Plus Finish and Cellulose (R3/in)</option>
+                  <option value="3">Plus Finish and Fiberglass (R3/in)</option>
+                  <option value="6">Plus Finish and Spray Foam (R6/in)</option>
+                </select>
+              </div>
+              <div class="ui-block-c" id="centerID">
+                <input
+                  id="opThickSld"
+                  type="range"
+                  value="4"
+                  min="4"
+                  max="28"
+                  ui-slider-input="false"
+                  data-highlight="true"
+                  data-theme="c"
+                  data-track-theme="c"
+                />
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="opThickDiv">
+                          <input id="opThickOut" type="text" />
+                        </div>
+                      </td>
+                      <td>( " ) Opaque Thickness</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="ui-grid-c ui-responsive">
+              <div class="ui-block-a" id="centerID">
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="opThermResDiv">
+                          <input id="opThermResOut" type="text" />
+                        </div>
+                      </td>
+                      <td>(R) Opaque Thermal Resistance</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="ui-block-b" id="centerID">
+                <input
+                  id="doorThickSld"
+                  type="range"
+                  value="2"
+                  min="2"
+                  max="12"
+                  ui-slider-input="false"
+                  data-highlight="true"
+                  data-theme="c"
+                  data-track-theme="c"
+                  onchange="processInput()"
+                />
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="doorThermResOutDiv">
+                          <input id="doorThermResOut" type="text" />
+                        </div>
+                      </td>
+                      <td>(R) Door Thermal Resistance</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="ui-block-c" id="centerID">
+                <input
+                  id="winThermResSld"
+                  type="range"
+                  value="1"
+                  min="1"
+                  max="10"
+                  ui-slider-input="false"
+                  data-highlight="true"
+                  data-theme="c"
+                  data-track-theme="c"
+                  onchange="processInput()"
+                />
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="winThermResOutDiv">
+                          <input id="winThermResOut" type="text" />
+                        </div>
+                      </td>
+                      <td>(R) Window Thermal Resistance</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="ui-grid-c ui-responsive">
+              <div class="ui-block-a" id="centerID">
+                <input
+                  id="winAreaSld"
+                  type="range"
+                  value="0"
+                  min="0"
+                  max="108"
+                  ui-slider-input="false"
+                  data-highlight="true"
+                  data-theme="c"
+                  data-track-theme="c"
+                />
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="winAreaOutDiv">
+                          <input id="winAreaOut" type="text" />
+                        </div>
+                      </td>
+                      <td>(SQ. FT) Window Area</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="ui-block-b" id="centerID">
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="allThermResDiv">
+                          <input id="allThermResOut" type="text" />
+                        </div>
+                      </td>
+                      <td>(R) Effective Overall thermal Resistance</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="ui-block-c">
+                <div id="centerTextSld">
+                  <table>
+                    <tr>
+                      <td>
+                        <div id="annualEnergyDiv">
+                          <input id="annualEnergyOut" type="text" />
+                        </div>
+                      </td>
+                      <td>(kWh) Annual Energy</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="ui-grid-c ui-responsive">
+              <div class="ui-block-a" id="centerID">
+                <select
+                  name="graphs"
+                  id="graphs"
+                  onchange="processInput()"
+                  data-mini="true"
+                >
+                  <option value="0">GRAPHS</option>
+                  <option value="1">Graph 1</option>
+                  <option value="2">Graph 2</option>
+                </select>
+              </div>
+              <div class="ui-block-b" id="centerID">
+                <select
+                  name="readOuts"
+                  id="readOuts"
+                  onchange="processInput()"
+                  data-mini="true"
+                >
+                  <option value="0">READOUTS</option>
+                  <option value="1">Net to Gross Floor Area</option>
+                  <option value="2">Energy Bill Per Net Floor Area</option>
+                </select>
+              </div>
+              <div class="ui-block-c" id="centerID">
+                <select
+                  name="concepts"
+                  id="concepts"
+                  onchange="processInputConcepts()"
+                  data-mini="true"
+                >
+                  <option value="0">CONCEPTS</option>
+                  <option value="1">Local Conditions</option>
+                  <option value="2">Annual Energy Budget</option>
+                  <option value="3">Drafts and Ventilation</option>
+                  <option value="4">Insulation and Heat Loss</option>
+                  <option value="5">Materials and Insulation</option>
+                  <option value="6">Environmental Impact</option>
+                </select>
+              </div>
+            </div>
+            <p id="conceptsP"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

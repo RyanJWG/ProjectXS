@@ -1,0 +1,109 @@
+/*
+  Authors: Dexter Adderley A00421717
+           Ryan Wright A00429924
+           Matthew DeViller A00434806
+*/
+/*User defined class css*/
+
+/*Sets the back round to the specified colour*/
+.ui-page,
+.ui-header {
+  background: #cedbce !important;
+}
+
+/*Sets the gap between each grid block*/
+.ui-block-b,
+.ui-block-a,
+.ui-block-c {
+  padding: 8px 2px 0px 2px;
+}
+
+.ui-slider-input {
+  display: none !important;
+}
+
+/*User defined id's*/
+
+/*Centers the project title img*/
+#projectTitle {
+  margin-top: 6%;
+}
+
+/*Sets the width of the text boxes*/
+#opThickOut,
+#opThermResOut,
+#doorThermResOut,
+#winthermResOut,
+#winAreaOut,
+#allThermResOut {
+  width: 50px;
+}
+
+/*Sets the width of the energy out text box*/
+#annualEnergyOut {
+  width: 75px;
+}
+
+/*Sets the options for the menus to default light gray*/
+#chapters,
+#readOuts,
+#graphs {
+  color: lightgray;
+}
+
+/*Centers the first select menu*/
+#chapCentering {
+  margin-top: 80px;
+}
+
+/*Sets the plan view height and width*/
+#planView {
+  height: 178px;
+  width: 321px;
+}
+
+/*Sets the elevation view height and width*/
+#elevView {
+  height: 154px;
+  width: 321px;
+}
+
+/*Sets the ship crate height and width*/
+#shipCrate {
+  height: 194px;
+  width: 260px;
+  margin-left: 8%;
+}
+
+/*Sets the specific options to appear dark blue*/
+#chapOption,
+#insulation {
+  color: darkblue !important;
+}
+
+/*Hides the insulation page*/
+#insulationChap {
+  visibility: hidden;
+}
+
+/*Wrapper div that allows everything to keep a static size unless its 
+mobile view*/
+#wrapper {
+  width: 1400px;
+}
+
+/*Centers and sizes each grid block*/
+#centerID {
+  width: 328px;
+}
+
+/*Centers each text box with slider*/
+#centerTextSld {
+  margin-left: 15%;
+  width: 80%;
+}
+
+#conceptsP {
+  font-size: 19px;
+  padding-left: 10px;
+}
